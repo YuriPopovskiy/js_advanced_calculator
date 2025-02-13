@@ -4,47 +4,28 @@
  * @return {object}
  */
 function makeCalculator() {
-  let result = 0;
-
-  const calculator = {
+  return {
     result: 0,
 
-    add(num) {
-      return num + result;
-    },
+    add: (num) => (x) => x + num,
+    subtract: (num) => (x) => x - num,
+    multiply: (num) => (x) => x * num,
+    divide: (num) => (x) => x / num,
 
-    subtract(num) {
-      return result - num;
-    },
-
-    multiply(num) {
-      return num * result;
-    },
-
-    divide(num) {
-      if (num === 0) {
-        throw new Error('Division by zero is not allowed.');
+    operate(callback, num) {
+      if (typeof callback !== 'function') {
+        throw new Error('callback must be a function');
       }
-
-      return result / num;
-    },
-
-    operate(operationCallback, operand) {
-      result = operationCallback(operand);
-      this.result = result;
+      this.result = callback(num)(this.result);
 
       return this;
     },
 
     reset() {
-      result = 0;
       this.result = 0;
 
       return this;
     },
   };
-
-  return calculator;
 }
-
 module.exports = makeCalculator;
